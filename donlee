@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don | BU Questrom</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f6f6f6;
+    --text: #1d1d1f;
+    --muted: #5f6368;
+    --point: #cc0000;
+    --point-soft: #fbe9e9;
+    --border: #e4e4e4;
+    --nav-bg: rgba(255, 255, 255, 0.92);
+  }
+
+  body.dark {
+    --bg: #121212;
+    --surface: #1e1e1e;
+    --text: #f1f1f1;
+    --muted: #a8a8a8;
+    --point: #ff4d4d;
+    --point-soft: #3a1c1c;
+    --border: #2e2e2e;
+    --nav-bg: rgba(18, 18, 18, 0.92);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .logo {
+    font-weight: 800;
+    color: var(--point);
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+
+  .menu {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin-left: auto;
+  }
+
+  .menu a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .menu a:hover,
+  .menu a.active {
+    background: var(--point-soft);
+    color: var(--point);
+  }
+
+  .theme-toggle {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .theme-toggle:hover { border-color: var(--point); }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  section {
+    padding: 56px 0 24px;
+    scroll-margin-top: 64px;
+  }
+
+  .section-label {
+    color: var(--point);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--surface);
+    border-radius: 20px;
+    border-top: 6px solid var(--point);
+    margin-bottom: 28px;
+    transition: background 0.3s;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--point);
+    color: #fff;
+    font-size: 2.4rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 6px;
+  }
+
+  .hero p { color: var(--muted); }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    background: var(--point-soft);
+    color: var(--point);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .card ul { list-style: none; }
+
+  .card li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card li:last-child { border-bottom: none; }
+
+  .num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--point);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .project {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--point);
+    border-radius: 14px;
+    padding: 20px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .project .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .project p { color: var(--text); }
+
+  .project .tags {
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.3s;
+  }
+
+  .contact-item:hover { border-color: var(--point); }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--point-soft);
+    color: var(--point);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-item small {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 24px 16px 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .nav-inner { padding: 10px 12px; }
+    .logo { display: none; }
+    .menu { margin-left: 0; }
+    .menu a { padding: 6px 10px; font-size: 0.9rem; }
+    section { padding-top: 40px; }
+    h2 { font-size: 1.35rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#about" class="logo">Don</a>
+    <ul class="menu">
+      <li><a href="#about" class="active">소개</a></li>
+      <li><a href="#projects">프로젝트</a></li>
+      <li><a href="#contact">연락처</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환">🌙</button>
+  </div>
+</nav>
+
+<main>
+  <section id="about">
+    <div class="section-label">About</div>
+    <h2>소개</h2>
+
+    <div class="hero">
+      <div class="avatar">D</div>
+      <h1>Don</h1>
+      <p>Boston University · Questrom School of Business</p>
+      <div class="tags">
+        <span class="tag">Operations &amp; Supply Chain</span>
+        <span class="tag">Business Analytics</span>
+        <span class="tag">4학년 (Senior)</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>취미</h3>
+        <ul>
+          <li><span class="num">1</span>축구</li>
+          <li><span class="num">2</span>[취미 2]</li>
+          <li><span class="num">3</span>[취미 3]</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>좋아하는 장소</h3>
+        <ul>
+          <li><span class="num">1</span>[장소 1]</li>
+          <li><span class="num">2</span>[장소 2]</li>
+          <li><span class="num">3</span>[장소 3]</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-label">Projects</div>
+    <h2>프로젝트</h2>
+
+    <div class="projects">
+      <div class="project">
+        <h3>[프로젝트 이름 1]</h3>
+        <div class="meta">[과목명 또는 기간]</div>
+        <p>[프로젝트 한두 줄 설명]</p>
+        <div class="tags">
+          <span class="tag">[사용 도구]</span>
+          <span class="tag">[키워드]</span>
+        </div>
+      </div>
+      <div class="project">
+        <h3>[프로젝트 이름 2]</h3>
+        <div class="meta">[과목명 또는 기간]</div>
+        <p>[프로젝트 한두 줄 설명]</p>
+        <div class="tags">
+          <span class="tag">[사용 도구]</span>
+          <span class="tag">[키워드]</span>
+        </div>
+      </div>
+      <div class="project">
+        <h3>[프로젝트 이름 3]</h3>
+        <div class="meta">[과목명 또는 기간]</div>
+        <p>[프로젝트 한두 줄 설명]</p>
+        <div class="tags">
+          <span class="tag">[사용 도구]</span>
+          <span class="tag">[키워드]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-label">Contact</div>
+    <h2>연락처</h2>
+
+    <div class="contact-list">
+      <a class="contact-item" href="mailto:[아이디]@bu.edu">
+        <span class="contact-icon">@</span>
+        <span><small>Email</small>[아이디]@bu.edu</span>
+      </a>
+      <a class="contact-item" href="https://www.linkedin.com/in/[아이디]" target="_blank" rel="noopener">
+        <span class="contact-icon">in</span>
+        <span><small>LinkedIn</small>linkedin.com/in/[아이디]</span>
+      </a>
+      <a class="contact-item" href="https://github.com/[아이디]" target="_blank" rel="noopener">
+        <span class="contact-icon">&lt;/&gt;</span>
+        <span><small>GitHub</small>github.com/[아이디]</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 Don · Boston University</footer>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+
+  function setTheme(dark) {
+    document.body.classList.toggle('dark', dark);
+    toggle.textContent = dark ? '☀️' : '🌙';
+    toggle.setAttribute('aria-label', dark ? '라이트모드 전환' : '다크모드 전환');
+  }
+
+  setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  toggle.addEventListener('click', function () {
+    setTheme(!document.body.classList.contains('dark'));
+  });
+
+  const links = document.querySelectorAll('.menu a');
+  const sections = document.querySelectorAll('main section');
+
+  function updateActive() {
+    let current = sections[0].id;
+    sections.forEach(function (sec) {
+      if (window.scrollY + 90 >= sec.offsetTop) current = sec.id;
+    });
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
+      current = sections[sections.length - 1].id;
+    }
+    links.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActive);
+  updateActive();
+</script>
+
+</body>
+</html>
